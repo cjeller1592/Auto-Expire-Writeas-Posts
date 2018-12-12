@@ -7,6 +7,9 @@ import (
 )
 
 func main() {
+	
+	// Following Write.as API protocol for authentication
+	// Create a new client, log in, and retrieve the access token
 
 	c := writeas.NewClient()
 
@@ -15,6 +18,8 @@ func main() {
 	access_token := u.AccessToken
 
 	c.SetToken(access_token)
+	
+	// Now we create the post
 
 	p, err := c.CreatePost(&writeas.PostParams{
 		Title:   "Set up lunch with Paul",
@@ -23,14 +28,16 @@ func main() {
 	if err != nil {
 		fmt.Println("Ooops! %v\n", err)
 	} else {
-		fmt.Println("Here is the post: https://write.as/" + p.ID)
-	}
-
-	fmt.Println("It will expire in 5 minutes!")
-
-	token := p.Token
-
+		fmt.Println("Here is the post: https://write.as/" + p.ID + "\nIt will expire in 5 minutes!")
+		
+	// This is where the expiration magic (or lack thereof) comes in
+	// Let the program sleep for an allotted time 
+		
 	time.Sleep(5 * time.Minute)
+			
+	//Once that expires, the program runs through to delete the post
+		
+	token := p.Token
 
 	d := c.DeletePost(p.ID, token)
 
@@ -42,15 +49,3 @@ func main() {
 
 }
 
-//	p, err := c.CreatePost(&writeas.PostParams{
-//		Title:   "Check this out!",
-//		Content: "I am writing in go!",
-//	})
-//	if err != nil {
-// Perhaps show err.Error()
-//	}
-//  fmt.Println(p)
-// Save token for later, since it won't ever be returned again
-//	token := p.Token
-
-//}
