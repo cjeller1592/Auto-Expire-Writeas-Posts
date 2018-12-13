@@ -12,8 +12,14 @@ func main() {
 	// Create a new client, log in, and retrieve the access token
 
 	c := writeas.NewClient()
-
+	
+	// Make sure to update with your Write.as login 
 	u, err := c.LogIn("blahblah", "blahblah")
+	if err != nil {
+		fmt.Println("Your password or username is incorrect. Try again!")
+	} else {
+		fmt.Println("You are logged in!")
+	}
 
 	access_token := u.AccessToken
 
@@ -31,7 +37,7 @@ func main() {
 		fmt.Println("Here is the post: https://write.as/" + p.ID + "\nIt will expire in 5 minutes!")
 		
 	// This is where the expiration magic (or lack thereof) comes in
-	// Let the program sleep for an allotted time 
+	// Let the program sleep for an allotted time - I chose 5 minutes but feel free to edit this
 		
 	time.Sleep(5 * time.Minute)
 			
